@@ -1,7 +1,7 @@
-%global _with_python3 1
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print (get_python_lib())")}
 
 %if 0%{?fedora}
+%global _with_python3 1
 %{!?python3_pkgversion: %global python3_pkgversion 3}
 %else
 %{!?python3_pkgversion: %global python3_pkgversion 34}
