@@ -45,6 +45,7 @@ Summary: HTTP library, written in Python, for human beings
 %{?python_provide:%python_provide python2-requests}
 
 BuildRequires:  python2-devel
+BuildRequires:  python-setuptools
 BuildRequires:  python-chardet
 BuildRequires:  python2-urllib3 == %{urllib3_unbundled_version}
 
