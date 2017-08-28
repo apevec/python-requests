@@ -153,8 +153,8 @@ ln -s ../../idna %{buildroot}/%{python2_sitelib}/requests/packages/idna
 
 %check
 
-%if ! 0%{?_module_build}
-# Don't run tests on module-build for now
+%if 0
+# Don't run tests
 # See: https://bugzilla.redhat.com/show_bug.cgi?id=1450608
 PYTHONPATH=./ py.test
 %if 0%{?_with_python3}
