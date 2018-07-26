@@ -7,6 +7,9 @@
 %bcond_without tests
 %endif
 
+%if 0%{?fedora} || 0%{?rhel} > 7
+%global with_python3 1
+%endif
 
 Name:           python-requests
 Version:        2.21.0
@@ -75,6 +78,7 @@ cumbersome. Python’s built-in urllib2 module provides most of the HTTP
 capabilities you should need, but the API is thoroughly broken. This library is
 designed to make HTTP requests easy for developers.
 
+%if 0%{?with_python3}
 %package -n python%{python3_pkgversion}-requests
 Summary: HTTP library, written in Python, for human beings
 
@@ -100,6 +104,7 @@ Most existing Python modules for sending HTTP requests are extremely verbose and
 cumbersome. Python’s built-in urllib2 module provides most of the HTTP
 capabilities you should need, but the API is thoroughly broken. This library is
 designed to make HTTP requests easy for developers.
+%endif
 
 %prep
 %autosetup -p1 -n requests-%{version}
@@ -112,18 +117,24 @@ sed -i '/#!\/usr\/.*python/d' requests/certs.py
 
 %build
 %py2_build
+%if 0%{?with_python3}
 %py3_build
+%endif
 
 
 %install
 %py2_install
+%if 0%{?with_python3}
 %py3_install
+%endif
 
 
 %if %{with tests}
 %check
 PYTHONPATH=%{buildroot}%{python2_sitelib} %{__python2} -m pytest -v
+%if 0%{?with_python3}
 PYTHONPATH=%{buildroot}%{python3_sitelib} %{__python3} -m pytest -v
+%endif
 %endif # tests
 
 
@@ -133,11 +144,13 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} %{__python3} -m pytest -v
 %{python2_sitelib}/*.egg-info
 %{python2_sitelib}/requests/
 
+%if 0%{?with_python3}
 %files -n python%{python3_pkgversion}-requests
 %license LICENSE
 %doc README.md HISTORY.md
 %{python3_sitelib}/*.egg-info
 %{python3_sitelib}/requests/
+%endif
 
 
 %changelog
