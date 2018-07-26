@@ -52,18 +52,17 @@ Summary: HTTP library, written in Python, for human beings
 %{?python_provide:%python_provide python2-requests}
 
 BuildRequires:  python2-devel
-BuildRequires:  python2-chardet
+BuildRequires:  python-chardet
 BuildRequires:  python2-urllib3
 BuildRequires:  python2-idna
 %if %{with tests}
 BuildRequires:  python2-pytest
 BuildRequires:  python2-pytest-cov
-BuildRequires:  python2-pytest-mock
 %endif
 
 
 Requires:       ca-certificates
-Requires:       python2-chardet
+Requires:       python-chardet
 Requires:       python2-urllib3
 Requires:       python2-idna
 
