@@ -13,7 +13,7 @@
 
 Name:           python-requests
 Version:        2.21.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        HTTP library, written in Python, for human beings
 
 License:        ASL 2.0
@@ -62,8 +62,8 @@ BuildRequires:  python2-pytest-cov
 
 
 Requires:       ca-certificates
-Requires:       python-chardet
-Requires:       python2-urllib3
+Requires:       python-chardet >= 3.0.2
+Requires:       python2-urllib3 >= 1.21.1
 Requires:       python2-idna
 
 %if 0%{?rhel} && 0%{?rhel} <= 6
@@ -94,8 +94,8 @@ BuildRequires:  python%{python3_pkgversion}-pytest-httpbin
 BuildRequires:  python%{python3_pkgversion}-pytest-mock
 %endif
 
-Requires:       python%{python3_pkgversion}-chardet
-Requires:       python%{python3_pkgversion}-urllib3
+Requires:       python%{python3_pkgversion}-chardet >= 3.0.2
+Requires:       python%{python3_pkgversion}-urllib3 >= 1.21.1
 Requires:       python%{python3_pkgversion}-idna
 
 %description -n python%{python3_pkgversion}-requests
@@ -153,6 +153,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} %{__python3} -m pytest -v || true
 
 
 %changelog
+* Tue Jun 11 2019 Yatin Karel <ykarel@redhat.com> - 2.21.0-3
+- Add minimum requirement for chardet and urllib3
+
 * Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 2.21.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
