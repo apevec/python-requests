@@ -1,10 +1,11 @@
+%{?python_enable_dependency_generator}
 %if 0%{?_module_build}
 # Don't run tests on module-build for now
 # See: https://bugzilla.redhat.com/show_bug.cgi?id=1450608
 %bcond_with tests
 %else
 # When bootstrapping Python, we cannot test this yet
-%bcond_without tests
+%bcond_with tests
 %endif
 
 
