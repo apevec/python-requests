@@ -1,3 +1,4 @@
+%{?python_enable_dependency_generator}
 %if 0%{?_module_build}
 # Don't run tests on module-build for now
 # See: https://bugzilla.redhat.com/show_bug.cgi?id=1450608
@@ -44,30 +45,24 @@ Summary: HTTP library, written in Python, for human beings
 %{?python_provide:%python_provide python%{python3_pkgversion}-requests}
 
 BuildRequires:  python%{python3_pkgversion}-devel
-BuildRequires:  pyproject-rpm-macros
-
+BuildRequires:  python%{python3_pkgversion}-chardet
+BuildRequires:  python%{python3_pkgversion}-urllib3
+BuildRequires:  python%{python3_pkgversion}-idna
 %if %{with tests}
-BuildRequires:  python3dist(pytest)
-BuildRequires:  python3dist(pytest-httpbin)
-BuildRequires:  python3dist(pytest-mock)
+BuildRequires:  python%{python3_pkgversion}-pytest
+BuildRequires:  python%{python3_pkgversion}-pytest-httpbin
+BuildRequires:  python%{python3_pkgversion}-pytest-mock
 %endif
 
+Requires:       python%{python3_pkgversion}-chardet >= 3.0.2
+Requires:       python%{python3_pkgversion}-urllib3 >= 1.21.1
+Requires:       python%{python3_pkgversion}-idna >= 2.5
 
 %description -n python%{python3_pkgversion}-requests
 Most existing Python modules for sending HTTP requests are extremely verbose and
 cumbersome. Python’s built-in urllib2 module provides most of the HTTP
 capabilities you should need, but the API is thoroughly broken. This library is
 designed to make HTTP requests easy for developers.
-
-%pyproject_extras_subpkg -n python%{python3_pkgversion}-requests security socks
-
-%generate_buildrequires
-%if %{with tests}
-%pyproject_buildrequires -r
-%else
-%pyproject_buildrequires
-%endif
-
 
 %prep
 %autosetup -p1 -n requests-%{version}
@@ -84,24 +79,24 @@ sed -i '/#!\/usr\/.*python/d' requests/certs.py
 sed -i 's/ --doctest-modules//' pytest.ini
 
 %build
-%pyproject_wheel
+%py3_build
 
 
 %install
-%pyproject_install
-%pyproject_save_files requests
+%py3_install
 
 
 %if %{with tests}
 %check
 # test_https_warnings: https://github.com/psf/requests/issues/5530
-%pytest -v -k "not test_https_warnings"
-%endif
+%pytest -v -k "not test_https_warnings and not test_pyopenssl_redirect and not test_auth_is_stripped_on_http_downgrade"
+%endif # tests
 
-
-%files -n python%{python3_pkgversion}-requests -f %{pyproject_files}
+%files -n python%{python3_pkgversion}-requests
 %license LICENSE
 %doc README.md HISTORY.md
+%{python3_sitelib}/*.egg-info
+%{python3_sitelib}/requests/
 
 
 %changelog
